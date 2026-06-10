@@ -1,0 +1,76 @@
+@page "/register"
+@layout EmptyLayout
+@inject AuthService AuthService
+@inject NavigationManager Nav
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-logo">💰 FinTrack</div>
+        <p class="auth-subtitle">Create your free account</p>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-error">@errorMessage</div>
+        }
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input class="form-control" placeholder="John" @bind="model.FirstName" @bind:event="oninput" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input class="form-control" placeholder="Doe" @bind="model.LastName" @bind:event="oninput" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" placeholder="you@example.com"
+                   @bind="model.Email" @bind:event="oninput" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-control" type="password" placeholder="At least 6 characters"
+                   @bind="model.Password" @bind:event="oninput" />
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; justify-content:center;"
+                @onclick="HandleRegister" disabled="@isLoading">
+            @(isLoading ? "Creating account..." : "Create Account")
+        </button>
+
+        <p style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-secondary);">
+            Already have an account?
+            <a href="/login" style="color:var(--teal); font-weight:500;">Sign In</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    private RegisterDto model = new();
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task HandleRegister()
+    {
+        errorMessage = "";
+        if (string.IsNullOrWhiteSpace(model.FirstName) || string.IsNullOrWhiteSpace(model.Email)
+            || string.IsNullOrWhiteSpace(model.Password))
+        {
+            errorMessage = "Please fill in all fields.";
+            return;
+        }
+        if (model.Password.Length < 6)
+        {
+            errorMessage = "Password must be at least 6 characters.";
+            return;
+        }
+        isLoading = true;
+        var (success, message) = await AuthService.Register(model);
+        isLoading = false;
+        if (success) Nav.NavigateTo("/dashboard");
+        else errorMessage = message;
+    }
+}

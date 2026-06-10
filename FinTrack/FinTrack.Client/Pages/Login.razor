@@ -1,0 +1,66 @@
+@page "/login"
+@layout EmptyLayout
+@inject AuthService AuthService
+@inject NavigationManager Nav
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-logo">💰 FinTrack</div>
+        <p class="auth-subtitle">Sign in to your account</p>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-error">@errorMessage</div>
+        }
+
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" placeholder="you@example.com"
+                   @bind="model.Email" @bind:event="oninput" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-control" type="password" placeholder="••••••••"
+                   @bind="model.Password" @bind:event="oninput"
+                   @onkeydown="HandleKeyDown" />
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; justify-content:center;"
+                @onclick="HandleLogin" disabled="@isLoading">
+            @(isLoading ? "Signing in..." : "Sign In")
+        </button>
+
+        <p style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-secondary);">
+            Don't have an account?
+            <a href="/register" style="color:var(--teal); font-weight:500;">Register</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    private LoginDto model = new();
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task HandleLogin()
+    {
+        errorMessage = "";
+        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+        {
+            errorMessage = "Please enter your email and password.";
+            return;
+        }
+        isLoading = true;
+        var (success, message) = await AuthService.Login(model);
+        isLoading = false;
+        if (success) Nav.NavigateTo("/dashboard");
+        else errorMessage = message;
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await HandleLogin();
+    }
+}

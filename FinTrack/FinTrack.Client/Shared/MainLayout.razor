@@ -1,0 +1,70 @@
+@inherits LayoutComponentBase
+@inject AuthService AuthService
+@inject NavigationManager Nav
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            💰 FinTrack
+        </div>
+        <nav class="sidebar-nav">
+            <NavLink class="nav-item" href="/dashboard" Match="NavLinkMatch.Prefix">
+                <span class="icon">📊</span> Dashboard
+            </NavLink>
+            <NavLink class="nav-item" href="/transactions" Match="NavLinkMatch.Prefix">
+                <span class="icon">💳</span> Transactions
+            </NavLink>
+            <NavLink class="nav-item" href="/goals" Match="NavLinkMatch.Prefix">
+                <span class="icon">🎯</span> Savings Goals
+            </NavLink>
+        </nav>
+        <div class="sidebar-footer">
+            @if (currentUser != null)
+            {
+                <div style="font-size:13px; color:#9CA3AF; margin-bottom:10px;">
+                    👤 @currentUser.FirstName
+                </div>
+            }
+            <button class="btn btn-secondary btn-sm" style="width:100%;" @onclick="Logout">
+                Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-content">
+        <header class="topbar">
+            <span class="topbar-title">@GetPageTitle()</span>
+        </header>
+        <main class="page-content">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    private AuthResponseDto? currentUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentUser = await AuthService.GetCurrentUser();
+    }
+
+    private string GetPageTitle()
+    {
+        var uri = Nav.Uri;
+        if (uri.Contains("dashboard"))   return "Dashboard";
+        if (uri.Contains("transactions")) return "Transactions";
+        if (uri.Contains("goals"))        return "Savings Goals";
+        return "FinTrack";
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.Logout();
+        Nav.NavigateTo("/login");
+    }
+}

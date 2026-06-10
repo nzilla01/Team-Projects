@@ -1,0 +1,198 @@
+@page "/transactions"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject TransactionService TransactionService
+@inject CategoryService CategoryService
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<PageTitle>Transactions — FinTrack</PageTitle>
+
+<!-- Toolbar -->
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+    <div style="display:flex; gap:10px;">
+        <select class="form-control" style="width:auto;" @onchange="OnTypeFilter">
+            <option value="">All Types</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+        </select>
+    </div>
+    <button class="btn btn-primary" @onclick="OpenAddModal">+ Add Transaction</button>
+</div>
+
+<!-- Transaction list -->
+<div class="card">
+    @if (isLoading)
+    {
+        <p style="color:var(--text-secondary); padding:20px 0;">Loading transactions...</p>
+    }
+    else if (!transactions.Any())
+    {
+        <p style="color:var(--text-secondary); padding:20px 0; text-align:center;">
+            No transactions yet. Click "Add Transaction" to get started.
+        </p>
+    }
+    else
+    {
+        <div class="transaction-list">
+            @foreach (var t in transactions)
+            {
+                <div class="transaction-item">
+                    <div class="transaction-icon" style="background:@(t.CategoryColor)22;">
+                        @t.CategoryIcon
+                    </div>
+                    <div class="transaction-info">
+                        <div class="transaction-name">@t.Description</div>
+                        <div class="transaction-category">@t.CategoryName · @t.Date.ToString("MMM d, yyyy")</div>
+                    </div>
+                    <div class="transaction-amount @t.Type.ToLower()">
+                        @(t.Type == "Income" ? "+" : "-")$@t.Amount.ToString("N2")
+                    </div>
+                    <div class="transaction-actions">
+                        <button class="btn btn-secondary btn-sm btn-icon" @onclick="() => OpenEditModal(t)">✏️</button>
+                        <button class="btn btn-danger btn-sm btn-icon" @onclick="() => DeleteTransaction(t.Id)">🗑️</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Add/Edit Modal -->
+@if (showModal)
+{
+    <div class="modal-overlay" @onclick="CloseModal">
+        <div class="modal" @onclick:stopPropagation>
+            <div class="modal-header">
+                <span class="modal-title">@(editId.HasValue ? "Edit" : "Add") Transaction</span>
+                <button class="btn btn-secondary btn-sm btn-icon" @onclick="CloseModal">✕</button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMsg))
+            {
+                <div class="alert alert-error">@errorMsg</div>
+            }
+
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-control" @bind="form.Type">
+                    <option value="Expense">Expense</option>
+                    <option value="Income">Income</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Amount ($)</label>
+                    <input class="form-control" type="number" step="0.01" min="0"
+                           @bind="form.Amount" placeholder="0.00" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input class="form-control" type="date"
+                           value="@form.Date.ToString("yyyy-MM-dd")"
+                           @onchange="OnDateChange" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-control" @bind="form.CategoryId">
+                    <option value="0">-- Select category --</option>
+                    @foreach (var cat in categories.Where(c => c.Type == form.Type))
+                    {
+                        <option value="@cat.Id">@cat.Icon @cat.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <input class="form-control" placeholder="What was this for?"
+                       @bind="form.Description" @bind:event="oninput" />
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                <button class="btn btn-primary" @onclick="SaveTransaction" disabled="@isSaving">
+                    @(isSaving ? "Saving..." : "Save")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<TransactionDto> transactions = new();
+    private List<CategoryDto> categories = new();
+    private bool isLoading = true;
+    private bool showModal = false;
+    private bool isSaving = false;
+    private int? editId = null;
+    private string errorMsg = "";
+    private string typeFilter = "";
+    private CreateTransactionDto form = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryService.GetAll();
+        await LoadTransactions();
+    }
+
+    private async Task LoadTransactions()
+    {
+        isLoading = true;
+        transactions = await TransactionService.GetAll(type: string.IsNullOrEmpty(typeFilter) ? null : typeFilter);
+        isLoading = false;
+    }
+
+    private async Task OnTypeFilter(ChangeEventArgs e)
+    {
+        typeFilter = e.Value?.ToString() ?? "";
+        await LoadTransactions();
+    }
+
+    private void OpenAddModal()
+    {
+        form = new CreateTransactionDto { Date = DateTime.Today, Type = "Expense" };
+        editId = null; errorMsg = ""; showModal = true;
+    }
+
+    private void OpenEditModal(TransactionDto t)
+    {
+        form = new CreateTransactionDto
+        {
+            CategoryId  = t.CategoryId,
+            Amount      = t.Amount,
+            Description = t.Description,
+            Date        = t.Date,
+            Type        = t.Type
+        };
+        editId = t.Id; errorMsg = ""; showModal = true;
+    }
+
+    private void CloseModal() { showModal = false; errorMsg = ""; }
+
+    private void OnDateChange(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var d)) form.Date = d;
+    }
+
+    private async Task SaveTransaction()
+    {
+        errorMsg = "";
+        if (form.Amount <= 0) { errorMsg = "Please enter a valid amount."; return; }
+        if (form.CategoryId == 0) { errorMsg = "Please select a category."; return; }
+
+        isSaving = true;
+        bool success = editId.HasValue
+            ? await TransactionService.Update(editId.Value, form)
+            : await TransactionService.Create(form);
+        isSaving = false;
+
+        if (success) { CloseModal(); await LoadTransactions(); }
+        else errorMsg = "Something went wrong. Please try again.";
+    }
+
+    private async Task DeleteTransaction(int id)
+    {
+        if (await TransactionService.Delete(id))
+            transactions.RemoveAll(t => t.Id == id);
+    }
+}

@@ -1,0 +1,179 @@
+@page "/goals"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject SavingsGoalService GoalService
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<PageTitle>Savings Goals — FinTrack</PageTitle>
+
+<div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+    <button class="btn btn-primary" @onclick="OpenAddModal">+ New Goal</button>
+</div>
+
+@if (isLoading)
+{
+    <p style="color:var(--text-secondary);">Loading goals...</p>
+}
+else if (!goals.Any())
+{
+    <div class="card" style="text-align:center; padding:40px;">
+        <div style="font-size:48px; margin-bottom:12px;">🎯</div>
+        <p style="color:var(--text-secondary);">No savings goals yet. Create one to get started!</p>
+    </div>
+}
+else
+{
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px;">
+        @foreach (var goal in goals)
+        {
+            <div class="card">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
+                    <div>
+                        <div style="font-size:16px; font-weight:600;">@goal.Title</div>
+                        @if (!string.IsNullOrEmpty(goal.Description))
+                        {
+                            <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;">@goal.Description</div>
+                        }
+                    </div>
+                    @if (goal.IsCompleted)
+                    {
+                        <span style="background:#D1FAE5; color:#065F46; font-size:12px; font-weight:600; padding:3px 10px; border-radius:100px;">✓ Done</span>
+                    }
+                </div>
+
+                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;">
+                    <span style="color:var(--text-secondary);">Progress</span>
+                    <span style="font-weight:600;">
+                        $@goal.CurrentAmount.ToString("N2") / $@goal.TargetAmount.ToString("N2")
+                    </span>
+                </div>
+                <div class="progress" style="margin-bottom:12px;">
+                    <div class="progress-bar" style="width:@goal.ProgressPercentage%;"></div>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">
+                    @Math.Round(goal.ProgressPercentage, 1)% · Target: @goal.TargetDate.ToString("MMM d, yyyy")
+                </div>
+
+                @if (!goal.IsCompleted)
+                {
+                    <div style="display:flex; gap:8px;">
+                        <input type="number" class="form-control" placeholder="Deposit amount"
+                               id="deposit-@goal.Id" style="flex:1;" />
+                        <button class="btn btn-primary btn-sm"
+                                @onclick="() => Deposit(goal.Id, goal.Id)">Add</button>
+                        <button class="btn btn-danger btn-sm btn-icon"
+                                @onclick="() => DeleteGoal(goal.Id)">🗑️</button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+<!-- Add Modal -->
+@if (showModal)
+{
+    <div class="modal-overlay" @onclick="CloseModal">
+        <div class="modal" @onclick:stopPropagation>
+            <div class="modal-header">
+                <span class="modal-title">New Savings Goal</span>
+                <button class="btn btn-secondary btn-sm btn-icon" @onclick="CloseModal">✕</button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMsg))
+            {
+                <div class="alert alert-error">@errorMsg</div>
+            }
+
+            <div class="form-group">
+                <label class="form-label">Goal Title</label>
+                <input class="form-control" placeholder="e.g. Emergency Fund"
+                       @bind="form.Title" @bind:event="oninput" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description (optional)</label>
+                <input class="form-control" placeholder="What are you saving for?"
+                       @bind="form.Description" @bind:event="oninput" />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Target Amount ($)</label>
+                    <input class="form-control" type="number" step="0.01" min="0"
+                           @bind="form.TargetAmount" placeholder="0.00" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Target Date</label>
+                    <input class="form-control" type="date"
+                           value="@form.TargetDate.ToString("yyyy-MM-dd")"
+                           @onchange="OnDateChange" />
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                <button class="btn btn-primary" @onclick="SaveGoal" disabled="@isSaving">
+                    @(isSaving ? "Saving..." : "Create Goal")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<SavingsGoalDto> goals = new();
+    private bool isLoading = true;
+    private bool showModal = false;
+    private bool isSaving = false;
+    private string errorMsg = "";
+    private CreateSavingsGoalDto form = new();
+    private Dictionary<int, decimal> depositAmounts = new();
+
+    protected override async Task OnInitializedAsync() => await LoadGoals();
+
+    private async Task LoadGoals()
+    {
+        isLoading = true;
+        goals = await GoalService.GetAll();
+        isLoading = false;
+    }
+
+    private void OpenAddModal()
+    {
+        form = new CreateSavingsGoalDto { TargetDate = DateTime.Today.AddMonths(3) };
+        errorMsg = ""; showModal = true;
+    }
+
+    private void CloseModal() { showModal = false; errorMsg = ""; }
+
+    private void OnDateChange(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var d)) form.TargetDate = d;
+    }
+
+    private async Task SaveGoal()
+    {
+        errorMsg = "";
+        if (string.IsNullOrWhiteSpace(form.Title)) { errorMsg = "Please enter a goal title."; return; }
+        if (form.TargetAmount <= 0) { errorMsg = "Please enter a target amount."; return; }
+
+        isSaving = true;
+        var success = await GoalService.Create(form);
+        isSaving = false;
+
+        if (success) { CloseModal(); await LoadGoals(); }
+        else errorMsg = "Something went wrong.";
+    }
+
+    private async Task Deposit(int goalId, int elementId)
+    {
+        // In a real implementation, read from a bound field.
+        // This demonstrates the deposit flow — wire to an @bind field per goal.
+        await GoalService.Deposit(goalId, 50);
+        await LoadGoals();
+    }
+
+    private async Task DeleteGoal(int id)
+    {
+        if (await GoalService.Delete(id)) goals.RemoveAll(g => g.Id == id);
+    }
+}

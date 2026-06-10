@@ -1,0 +1,115 @@
+@page "/dashboard"
+@page "/"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject DashboardService DashboardService
+@inject AuthService AuthService
+@using FinTrack.Client.Services
+@using FinTrack.Shared.DTOs
+
+<PageTitle>Dashboard — FinTrack</PageTitle>
+
+@if (isLoading)
+{
+    <p style="color:var(--text-secondary);">Loading your dashboard...</p>
+}
+else if (data != null)
+{
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Balance</div>
+            <div class="stat-value @(data.TotalBalance >= 0 ? "income" : "expense")">
+                $@data.TotalBalance.ToString("N2")
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Income</div>
+            <div class="stat-value income">+$@data.TotalIncome.ToString("N2")</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Expenses</div>
+            <div class="stat-value expense">-$@data.TotalExpenses.ToString("N2")</div>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+        <!-- Recent Transactions -->
+        <div class="card">
+            <div class="card-title">Recent Transactions</div>
+            @if (!data.RecentTransactions.Any())
+            {
+                <p style="color:var(--text-secondary); font-size:14px; padding:16px 0;">
+                    No transactions yet. <a href="/transactions" style="color:var(--teal);">Add one →</a>
+                </p>
+            }
+            else
+            {
+                <div class="transaction-list">
+                    @foreach (var t in data.RecentTransactions)
+                    {
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background:@(t.CategoryColor)22;">
+                                @t.CategoryIcon
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-name">@t.Description</div>
+                                <div class="transaction-category">@t.CategoryName</div>
+                            </div>
+                            <div class="transaction-amount @t.Type.ToLower()">
+                                @(t.Type == "Income" ? "+" : "-")$@t.Amount.ToString("N2")
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div style="margin-top:12px;">
+                    <a href="/transactions" class="btn btn-secondary btn-sm">View all →</a>
+                </div>
+            }
+        </div>
+
+        <!-- Spending by Category -->
+        <div class="card">
+            <div class="card-title">Spending by Category</div>
+            @if (!data.SpendingByCategory.Any())
+            {
+                <p style="color:var(--text-secondary); font-size:14px; padding:16px 0;">
+                    No expense data yet.
+                </p>
+            }
+            else
+            {
+                <div style="display:flex; flex-direction:column; gap:14px; margin-top:8px;">
+                    @foreach (var c in data.SpendingByCategory.Take(6))
+                    {
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;">
+                                <span style="font-weight:500;">@c.CategoryName</span>
+                                <span style="color:var(--text-secondary);">
+                                    $@c.Amount.ToString("N2") · @c.Percentage%
+                                </span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar"
+                                     style="width:@c.Percentage%; background:@c.CategoryColor;">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+    </div>
+}
+
+@code {
+    private DashboardDto? data;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await DashboardService.Get();
+        isLoading = false;
+    }
+}

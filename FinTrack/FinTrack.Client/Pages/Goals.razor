@@ -6,6 +6,7 @@
 
 <PageTitle>Savings Goals — FinTrack</PageTitle>
 
+<!-- Toolbar -->
 <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
     <button class="btn btn-primary" @onclick="OpenAddModal">+ New Goal</button>
 </div>
@@ -18,7 +19,10 @@ else if (!goals.Any())
 {
     <div class="card" style="text-align:center; padding:40px;">
         <div style="font-size:48px; margin-bottom:12px;">🎯</div>
-        <p style="color:var(--text-secondary);">No savings goals yet. Create one to get started!</p>
+        <p style="color:var(--text-secondary); margin-bottom:16px;">
+            No savings goals yet. Create one to get started!
+        </p>
+        <button class="btn btn-primary" @onclick="OpenAddModal">+ Create First Goal</button>
     </div>
 }
 else
@@ -27,50 +31,76 @@ else
         @foreach (var goal in goals)
         {
             <div class="card">
+                <!-- Goal header -->
                 <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
                     <div>
                         <div style="font-size:16px; font-weight:600;">@goal.Title</div>
                         @if (!string.IsNullOrEmpty(goal.Description))
                         {
-                            <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;">@goal.Description</div>
+                            <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;">
+                                @goal.Description
+                            </div>
                         }
                     </div>
                     @if (goal.IsCompleted)
                     {
-                        <span style="background:#D1FAE5; color:#065F46; font-size:12px; font-weight:600; padding:3px 10px; border-radius:100px;">✓ Done</span>
+                        <span style="background:#D1FAE5; color:#065F46; font-size:12px; font-weight:600;
+                                     padding:3px 10px; border-radius:100px; white-space:nowrap;">
+                            ✓ Completed
+                        </span>
                     }
                 </div>
 
-                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;">
-                    <span style="color:var(--text-secondary);">Progress</span>
+                <!-- Amount & progress -->
+                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+                    <span style="color:var(--text-secondary);">Saved</span>
                     <span style="font-weight:600;">
-                        $@goal.CurrentAmount.ToString("N2") / $@goal.TargetAmount.ToString("N2")
+                        $@goal.CurrentAmount.ToString("N2") of $@goal.TargetAmount.ToString("N2")
                     </span>
                 </div>
-                <div class="progress" style="margin-bottom:12px;">
-                    <div class="progress-bar" style="width:@goal.ProgressPercentage%;"></div>
+                <div class="progress" style="margin-bottom:8px;">
+                    <div class="progress-bar"
+                         style="width:@Math.Min(100, goal.ProgressPercentage)%;">
+                    </div>
                 </div>
                 <div style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">
-                    @Math.Round(goal.ProgressPercentage, 1)% · Target: @goal.TargetDate.ToString("MMM d, yyyy")
+                    @Math.Round(goal.ProgressPercentage, 1)% complete
+                    · Target: @goal.TargetDate.ToString("MMM d, yyyy")
                 </div>
 
+                <!-- Actions — hidden when goal is completed -->
                 @if (!goal.IsCompleted)
                 {
-                    <div style="display:flex; gap:8px;">
-                        <input type="number" class="form-control" placeholder="Deposit amount"
-                               id="deposit-@goal.Id" style="flex:1;" />
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="number"
+                               class="form-control"
+                               placeholder="Deposit $"
+                               min="0"
+                               step="0.01"
+                               style="flex:1;"
+                               value="@GetDeposit(goal.Id)"
+                               @oninput="e => SetDeposit(goal.Id, e.Value?.ToString())" />
                         <button class="btn btn-primary btn-sm"
-                                @onclick="() => Deposit(goal.Id, goal.Id)">Add</button>
+                                @onclick="() => Deposit(goal.Id)">
+                            Add
+                        </button>
                         <button class="btn btn-danger btn-sm btn-icon"
-                                @onclick="() => DeleteGoal(goal.Id)">🗑️</button>
+                                title="Delete goal"
+                                @onclick="() => DeleteGoal(goal.Id)">
+                            🗑️
+                        </button>
                     </div>
+                    @if (!string.IsNullOrEmpty(GetDepositError(goal.Id)))
+                    {
+                        <p class="form-error">@GetDepositError(goal.Id)</p>
+                    }
                 }
             </div>
         }
     </div>
 }
 
-<!-- Add Modal -->
+<!-- Add Goal Modal -->
 @if (showModal)
 {
     <div class="modal-overlay" @onclick="CloseModal">
@@ -87,23 +117,28 @@ else
 
             <div class="form-group">
                 <label class="form-label">Goal Title</label>
-                <input class="form-control" placeholder="e.g. Emergency Fund"
+                <input class="form-control"
+                       placeholder="e.g. Emergency Fund, New Laptop, Holiday Trip"
                        @bind="form.Title" @bind:event="oninput" />
             </div>
             <div class="form-group">
-                <label class="form-label">Description (optional)</label>
-                <input class="form-control" placeholder="What are you saving for?"
+                <label class="form-label">Description <span style="color:var(--text-secondary);font-weight:400;">(optional)</span></label>
+                <input class="form-control"
+                       placeholder="What are you saving for?"
                        @bind="form.Description" @bind:event="oninput" />
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Target Amount ($)</label>
-                    <input class="form-control" type="number" step="0.01" min="0"
-                           @bind="form.TargetAmount" placeholder="0.00" />
+                    <input class="form-control"
+                           type="number" step="0.01" min="1"
+                           placeholder="0.00"
+                           @bind="form.TargetAmount" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">Target Date</label>
-                    <input class="form-control" type="date"
+                    <input class="form-control"
+                           type="date"
                            value="@form.TargetDate.ToString("yyyy-MM-dd")"
                            @onchange="OnDateChange" />
                 </div>
@@ -112,7 +147,7 @@ else
             <div class="modal-actions">
                 <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
                 <button class="btn btn-primary" @onclick="SaveGoal" disabled="@isSaving">
-                    @(isSaving ? "Saving..." : "Create Goal")
+                    @(isSaving ? "Creating..." : "Create Goal")
                 </button>
             </div>
         </div>
@@ -120,27 +155,75 @@ else
 }
 
 @code {
+    // ── State ────────────────────────────────────────────────────────────────
     private List<SavingsGoalDto> goals = new();
     private bool isLoading = true;
     private bool showModal = false;
     private bool isSaving = false;
     private string errorMsg = "";
     private CreateSavingsGoalDto form = new();
-    private Dictionary<int, decimal> depositAmounts = new();
 
+    // Per-goal deposit amounts and errors — keyed by goal ID
+    private Dictionary<int, decimal> depositAmounts = new();
+    private Dictionary<int, string> depositErrors  = new();
+
+    // ── Lifecycle ────────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync() => await LoadGoals();
 
+    // ── Data ─────────────────────────────────────────────────────────────────
     private async Task LoadGoals()
     {
         isLoading = true;
         goals = await GoalService.GetAll();
+        // Initialise deposit slots for any new goals
+        foreach (var g in goals)
+        {
+            depositAmounts.TryAdd(g.Id, 0);
+            depositErrors.TryAdd(g.Id, "");
+        }
         isLoading = false;
     }
 
+    // ── Deposit helpers ──────────────────────────────────────────────────────
+    private decimal GetDeposit(int id)
+        => depositAmounts.TryGetValue(id, out var v) ? v : 0;
+
+    private string GetDepositError(int id)
+        => depositErrors.TryGetValue(id, out var e) ? e : "";
+
+    private void SetDeposit(int id, string? raw)
+    {
+        depositErrors[id] = "";
+        depositAmounts[id] = decimal.TryParse(raw, out var d) ? d : 0;
+    }
+
+    private async Task Deposit(int goalId)
+    {
+        depositErrors[goalId] = "";
+        var amount = GetDeposit(goalId);
+        if (amount <= 0)
+        {
+            depositErrors[goalId] = "Enter an amount greater than $0.";
+            return;
+        }
+        var success = await GoalService.Deposit(goalId, amount);
+        if (success)
+        {
+            depositAmounts[goalId] = 0;
+            await LoadGoals();
+        }
+        else
+        {
+            depositErrors[goalId] = "Deposit failed. Please try again.";
+        }
+    }
+
+    // ── Modal ────────────────────────────────────────────────────────────────
     private void OpenAddModal()
     {
         form = new CreateSavingsGoalDto { TargetDate = DateTime.Today.AddMonths(3) };
-        errorMsg = ""; showModal = true;
+        errorMsg = "";
+        showModal = true;
     }
 
     private void CloseModal() { showModal = false; errorMsg = ""; }
@@ -153,27 +236,36 @@ else
     private async Task SaveGoal()
     {
         errorMsg = "";
-        if (string.IsNullOrWhiteSpace(form.Title)) { errorMsg = "Please enter a goal title."; return; }
-        if (form.TargetAmount <= 0) { errorMsg = "Please enter a target amount."; return; }
-
+        if (string.IsNullOrWhiteSpace(form.Title))
+        {
+            errorMsg = "Please enter a goal title.";
+            return;
+        }
+        if (form.TargetAmount <= 0)
+        {
+            errorMsg = "Please enter a target amount greater than $0.";
+            return;
+        }
+        if (form.TargetDate <= DateTime.Today)
+        {
+            errorMsg = "Target date must be in the future.";
+            return;
+        }
         isSaving = true;
         var success = await GoalService.Create(form);
         isSaving = false;
-
         if (success) { CloseModal(); await LoadGoals(); }
-        else errorMsg = "Something went wrong.";
+        else errorMsg = "Something went wrong. Please try again.";
     }
 
-    private async Task Deposit(int goalId, int elementId)
-    {
-        // In a real implementation, read from a bound field.
-        // This demonstrates the deposit flow — wire to an @bind field per goal.
-        await GoalService.Deposit(goalId, 50);
-        await LoadGoals();
-    }
-
+    // ── Delete ───────────────────────────────────────────────────────────────
     private async Task DeleteGoal(int id)
     {
-        if (await GoalService.Delete(id)) goals.RemoveAll(g => g.Id == id);
+        if (await GoalService.Delete(id))
+        {
+            goals.RemoveAll(g => g.Id == id);
+            depositAmounts.Remove(id);
+            depositErrors.Remove(id);
+        }
     }
 }

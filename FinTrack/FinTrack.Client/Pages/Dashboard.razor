@@ -3,6 +3,7 @@
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inject DashboardService DashboardService
 @inject AuthService AuthService
+@inject NavigationManager Nav
 @using FinTrack.Client.Services
 @using FinTrack.Shared.DTOs
 
@@ -10,28 +11,45 @@
 
 @if (isLoading)
 {
-    <p style="color:var(--text-secondary);">Loading your dashboard...</p>
+    <div style="display:flex; align-items:center; gap:12px; color:var(--text-secondary); padding:40px 0;">
+        <span style="font-size:24px;">⏳</span> Loading your dashboard...
+    </div>
 }
-else if (data != null)
+else if (data == null)
 {
-    <!-- Stats -->
+    <div class="alert alert-error">Could not load dashboard data. Please refresh the page.</div>
+}
+else
+{
+    <!-- Welcome -->
+    <div style="margin-bottom:24px;">
+        <h2 style="font-size:22px; font-weight:600; color:var(--text-primary);">
+            Welcome back@(firstName != "" ? $", {firstName}" : "")! 👋
+        </h2>
+        <p style="color:var(--text-secondary); font-size:14px; margin-top:4px;">
+            Here's your financial overview.
+        </p>
+    </div>
+
+    <!-- Stats grid -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-label">Total Balance</div>
+            <div class="stat-label">💰 Total Balance</div>
             <div class="stat-value @(data.TotalBalance >= 0 ? "income" : "expense")">
-                $@data.TotalBalance.ToString("N2")
+                @(data.TotalBalance < 0 ? "-" : "")$@Math.Abs(data.TotalBalance).ToString("N2")
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Total Income</div>
+            <div class="stat-label">📈 Total Income</div>
             <div class="stat-value income">+$@data.TotalIncome.ToString("N2")</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Total Expenses</div>
+            <div class="stat-label">📉 Total Expenses</div>
             <div class="stat-value expense">-$@data.TotalExpenses.ToString("N2")</div>
         </div>
     </div>
 
+    <!-- Two column section -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
 
         <!-- Recent Transactions -->
@@ -39,22 +57,29 @@ else if (data != null)
             <div class="card-title">Recent Transactions</div>
             @if (!data.RecentTransactions.Any())
             {
-                <p style="color:var(--text-secondary); font-size:14px; padding:16px 0;">
-                    No transactions yet. <a href="/transactions" style="color:var(--teal);">Add one →</a>
-                </p>
+                <div style="padding:24px 0; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">💳</div>
+                    <p style="color:var(--text-secondary); font-size:14px; margin-bottom:12px;">
+                        No transactions yet.
+                    </p>
+                    <a href="/transactions" class="btn btn-primary btn-sm">Add your first →</a>
+                </div>
             }
             else
             {
-                <div class="transaction-list">
+                <div class="transaction-list" style="margin-top:8px;">
                     @foreach (var t in data.RecentTransactions)
                     {
                         <div class="transaction-item">
-                            <div class="transaction-icon" style="background:@(t.CategoryColor)22;">
+                            <div class="transaction-icon"
+                                 style="background:@(t.CategoryColor)22;">
                                 @t.CategoryIcon
                             </div>
                             <div class="transaction-info">
                                 <div class="transaction-name">@t.Description</div>
-                                <div class="transaction-category">@t.CategoryName</div>
+                                <div class="transaction-category">
+                                    @t.CategoryName · @t.Date.ToString("MMM d")
+                                </div>
                             </div>
                             <div class="transaction-amount @t.Type.ToLower()">
                                 @(t.Type == "Income" ? "+" : "-")$@t.Amount.ToString("N2")
@@ -73,17 +98,21 @@ else if (data != null)
             <div class="card-title">Spending by Category</div>
             @if (!data.SpendingByCategory.Any())
             {
-                <p style="color:var(--text-secondary); font-size:14px; padding:16px 0;">
-                    No expense data yet.
-                </p>
+                <div style="padding:24px 0; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">📊</div>
+                    <p style="color:var(--text-secondary); font-size:14px;">
+                        Add some expenses to see your spending breakdown.
+                    </p>
+                </div>
             }
             else
             {
-                <div style="display:flex; flex-direction:column; gap:14px; margin-top:8px;">
+                <div style="display:flex; flex-direction:column; gap:14px; margin-top:12px;">
                     @foreach (var c in data.SpendingByCategory.Take(6))
                     {
                         <div>
-                            <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;">
+                            <div style="display:flex; justify-content:space-between;
+                                        margin-bottom:5px; font-size:13px;">
                                 <span style="font-weight:500;">@c.CategoryName</span>
                                 <span style="color:var(--text-secondary);">
                                     $@c.Amount.ToString("N2") · @c.Percentage%
@@ -101,14 +130,25 @@ else if (data != null)
         </div>
 
     </div>
+
+    <!-- Quick links -->
+    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="/transactions" class="btn btn-secondary">💳 Manage Transactions</a>
+        <a href="/goals" class="btn btn-secondary">🎯 View Savings Goals</a>
+    </div>
 }
 
 @code {
     private DashboardDto? data;
     private bool isLoading = true;
+    private string firstName = "";
 
     protected override async Task OnInitializedAsync()
     {
+        // Load user's first name for welcome message
+        var user = await AuthService.GetCurrentUser();
+        firstName = user?.FirstName ?? "";
+
         data = await DashboardService.Get();
         isLoading = false;
     }

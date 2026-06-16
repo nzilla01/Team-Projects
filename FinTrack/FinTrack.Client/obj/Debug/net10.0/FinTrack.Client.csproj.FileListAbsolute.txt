@@ -1,0 +1,10 @@
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\EmbeddedAttribute.cs
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\ValidatableTypeAttribute.cs
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.csproj.AssemblyReference.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.AssemblyInfoInputs.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.AssemblyInfo.cs
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Debug\net10.0\FinTrack.Client.sourcelink.json

@@ -138,6 +138,6 @@ az webapp deploy --resource-group fintrack-rg --name fintrack-client --src-path 
 
 | Name | Role |
 |------|------|
-| Nsikak Okon | Backend & Auth |
+| Nsikak Okon | Team Lead / Backend & Auth |
 | Victor | Frontend UI / Blazor |
 | Clement | Database & Deployment |

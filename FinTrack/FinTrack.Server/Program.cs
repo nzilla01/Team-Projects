@@ -70,10 +70,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ── AUTO-MIGRATE ON STARTUP ───────────────────────────────────────
-using (var scope = app.Services.CreateScope())
+// Wrapped in try/catch so the app still starts if DB is temporarily
+// unavailable (e.g. first cold start on Azure before SQL is ready)
+try
 {
+    using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogWarning("Database migration failed on startup: {Message}", ex.Message);
+    logger.LogWarning("Run 'dotnet ef database update' manually if the database is not yet set up.");
 }
 
 app.Run();

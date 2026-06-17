@@ -23,3 +23,4 @@ builder.Services.AddScoped<SavingsGoalService>();
 builder.Services.AddScoped<CategoryService>();
 
 await builder.Build().RunAsync();
+

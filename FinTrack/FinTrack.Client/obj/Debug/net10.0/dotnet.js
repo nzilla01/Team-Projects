@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "FinTrack.Client",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-lpA1YL7LGArX3E1umBaiGsLz8qlHibp6q6L15b08BM4=",
+    "hash": "sha256-bbtpxRv2JaPDNYwt5Ykyd6zimUoBbVvgxnZkWJkgW5Q=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.mx9wzm9o5h.js"
@@ -1260,28 +1260,28 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "FinTrack.Shared.wasm",
-        "name": "FinTrack.Shared.0udj28dgd2.wasm",
-        "integrity": "sha256-OAGt0eWKYdPhBfyvPohb4bIes0DbFSeflQ65EI/dsRc=",
+        "name": "FinTrack.Shared.9blqnswd77.wasm",
+        "integrity": "sha256-m2onGVupGHLNl61V2DkhQLzJBgGw+UmG0SV/aJG4xQs=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "FinTrack.Client.wasm",
-        "name": "FinTrack.Client.jimcyr9bdi.wasm",
-        "integrity": "sha256-+/pov3FDdfcgMbLeOOUWizkOhowQC5DEzfy1yA8Vwk4=",
+        "name": "FinTrack.Client.x88vjck3j0.wasm",
+        "integrity": "sha256-gd6H8JhSbOozGoHR4XsTHLWcaw6lF/lm5WtGG2rWSlg=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
         "virtualPath": "FinTrack.Shared.pdb",
-        "name": "FinTrack.Shared.306qtkrcxk.pdb",
-        "integrity": "sha256-411RqfmEIgU8O3NNOtx1WOVnlpgaHZqv8XDp6GlXuN4=",
+        "name": "FinTrack.Shared.vifvpyl8wu.pdb",
+        "integrity": "sha256-VzGHlZ5yaFxe+TstwYPPyf4zJgv2z5oxLKr+vw7hPPU=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "FinTrack.Client.pdb",
-        "name": "FinTrack.Client.jyr6ezd4im.pdb",
-        "integrity": "sha256-C92mk7zsg9E8T09RLASFMnOfjwQ8vY0P62pgC9nKf+Y=",
+        "name": "FinTrack.Client.gwuqf29bt0.pdb",
+        "integrity": "sha256-ENoVyD6M/DPGMIGger0a99rGzahp/tf+El4UVAEh5PY=",
         "cache": "force-cache"
       }
     ],

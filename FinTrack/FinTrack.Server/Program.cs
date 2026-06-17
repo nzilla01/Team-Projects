@@ -53,6 +53,7 @@ builder.Services.AddCors(options =>
                 "https://localhost:7001",
                 "http://localhost:5001",
                 "https://*.azurewebsites.net")
+              .SetIsOriginAllowedToAllowWildcardSubdomains()
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials());
@@ -70,8 +71,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ── AUTO-MIGRATE ON STARTUP ───────────────────────────────────────
-// Wrapped in try/catch so the app still starts if DB is temporarily
-// unavailable (e.g. first cold start on Azure before SQL is ready)
+// Wrapped in try/catch so the app still starts even if the database
+// is briefly unavailable (e.g. cold start on Azure).
 try
 {
     using var scope = app.Services.CreateScope();
@@ -82,7 +83,6 @@ catch (Exception ex)
 {
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
     logger.LogWarning("Database migration failed on startup: {Message}", ex.Message);
-    logger.LogWarning("Run 'dotnet ef database update' manually if the database is not yet set up.");
 }
 
 app.Run();

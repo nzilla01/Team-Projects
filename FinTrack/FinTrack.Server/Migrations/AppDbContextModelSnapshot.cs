@@ -18,9 +18,7 @@ namespace FinTrack.Server.Migrations
 
             modelBuilder.Entity("FinTrack.Shared.Models.Category", b =>
             {
-                b.Property<int>("Id").ValueGeneratedOnAdd()
-                    .HasColumnType("int")
-                    .UseIdentityColumn();
+                b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int").UseIdentityColumn();
                 b.Property<string>("Color").IsRequired().HasColumnType("nvarchar(max)");
                 b.Property<string>("Icon").IsRequired().HasColumnType("nvarchar(max)");
                 b.Property<string>("Name").IsRequired().HasColumnType("nvarchar(max)");
@@ -31,8 +29,7 @@ namespace FinTrack.Server.Migrations
 
             modelBuilder.Entity("FinTrack.Shared.Models.Transaction", b =>
             {
-                b.Property<int>("Id").ValueGeneratedOnAdd()
-                    .HasColumnType("int").UseIdentityColumn();
+                b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int").UseIdentityColumn();
                 b.Property<decimal>("Amount").HasColumnType("decimal(18,2)");
                 b.Property<int>("CategoryId").HasColumnType("int");
                 b.Property<DateTime>("Date").HasColumnType("datetime2");
@@ -47,8 +44,7 @@ namespace FinTrack.Server.Migrations
 
             modelBuilder.Entity("FinTrack.Shared.Models.SavingsGoal", b =>
             {
-                b.Property<int>("Id").ValueGeneratedOnAdd()
-                    .HasColumnType("int").UseIdentityColumn();
+                b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int").UseIdentityColumn();
                 b.Property<DateTime>("CreatedAt").HasColumnType("datetime2");
                 b.Property<decimal>("CurrentAmount").HasColumnType("decimal(18,2)");
                 b.Property<string>("Description").IsRequired().HasColumnType("nvarchar(max)");

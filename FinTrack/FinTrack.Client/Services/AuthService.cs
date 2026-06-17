@@ -7,11 +7,6 @@ using System.Text.Json;
 
 namespace FinTrack.Client.Services
 {
-    /// <summary>
-    /// Provides authentication state to Blazor components by reading
-    /// the stored JWT token from local storage and parsing its claims.
-    /// Uses a lightweight manual JWT parser — no external dependency needed.
-    /// </summary>
     public class JwtAuthStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService _localStorage;
@@ -26,15 +21,11 @@ namespace FinTrack.Client.Services
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _localStorage.GetItemAsStringAsync("authToken");
-
-            if (string.IsNullOrWhiteSpace(token))
-                return Unauthenticated();
+            if (string.IsNullOrWhiteSpace(token)) return Unauthenticated();
 
             var claims = ParseClaimsFromJwt(token);
-            if (claims == null)
-                return Unauthenticated();
+            if (claims == null) return Unauthenticated();
 
-            // Check expiry claim
             var expClaim = claims.FirstOrDefault(c => c.Type == "exp");
             if (expClaim != null && long.TryParse(expClaim.Value, out var exp))
             {
@@ -57,23 +48,17 @@ namespace FinTrack.Client.Services
         {
             var claims = ParseClaimsFromJwt(token) ?? new List<Claim>();
             var identity = new ClaimsIdentity(claims, "jwt");
-            var user = new ClaimsPrincipal(identity);
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         }
 
         public void NotifyUserLoggedOut()
         {
-            var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymous)));
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()))));
         }
 
         private static AuthenticationState Unauthenticated()
             => new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
-        /// <summary>
-        /// Manually parses claims from a JWT payload without any external library.
-        /// JWT structure: header.payload.signature (all base64url encoded)
-        /// </summary>
         private static IEnumerable<Claim>? ParseClaimsFromJwt(string jwt)
         {
             try
@@ -81,10 +66,7 @@ namespace FinTrack.Client.Services
                 var parts = jwt.Split('.');
                 if (parts.Length != 3) return null;
 
-                // Base64url decode the payload (middle part)
-                var payload = parts[1];
-                // Pad base64 string to multiple of 4
-                payload = payload.Replace('-', '+').Replace('_', '/');
+                var payload = parts[1].Replace('-', '+').Replace('_', '/');
                 switch (payload.Length % 4)
                 {
                     case 2: payload += "=="; break;
@@ -93,49 +75,36 @@ namespace FinTrack.Client.Services
 
                 var bytes = Convert.FromBase64String(payload);
                 var json = System.Text.Encoding.UTF8.GetString(bytes);
-
-                var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
-                if (keyValuePairs == null) return null;
+                var kvp = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
+                if (kvp == null) return null;
 
                 var claims = new List<Claim>();
-                foreach (var kvp in keyValuePairs)
+                foreach (var pair in kvp)
                 {
-                    var value = kvp.Value.ValueKind == JsonValueKind.String
-                        ? kvp.Value.GetString() ?? ""
-                        : kvp.Value.ToString();
-                    claims.Add(new Claim(kvp.Key, value));
+                    var value = pair.Value.ValueKind == JsonValueKind.String
+                        ? pair.Value.GetString() ?? "" : pair.Value.ToString();
+                    claims.Add(new Claim(pair.Key, value));
                 }
 
-                // Map standard JWT claims to ClaimTypes
                 var sub = claims.FirstOrDefault(c => c.Type == "sub");
-                if (sub != null)
-                    claims.Add(new Claim(ClaimTypes.NameIdentifier, sub.Value));
+                if (sub != null) claims.Add(new Claim(ClaimTypes.NameIdentifier, sub.Value));
 
                 var email = claims.FirstOrDefault(c => c.Type == "email");
-                if (email != null)
-                    claims.Add(new Claim(ClaimTypes.Email, email.Value));
+                if (email != null) claims.Add(new Claim(ClaimTypes.Email, email.Value));
 
                 return claims;
             }
-            catch
-            {
-                return null;
-            }
+            catch { return null; }
         }
     }
 
-    /// <summary>
-    /// Handles registration and login API calls.
-    /// Stores the returned JWT in local storage and updates auth state.
-    /// </summary>
     public class AuthService
     {
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorage;
         private readonly JwtAuthStateProvider _authProvider;
 
-        public AuthService(HttpClient http, ILocalStorageService localStorage,
-            AuthenticationStateProvider authProvider)
+        public AuthService(HttpClient http, ILocalStorageService localStorage, AuthenticationStateProvider authProvider)
         {
             _http = http;
             _localStorage = localStorage;

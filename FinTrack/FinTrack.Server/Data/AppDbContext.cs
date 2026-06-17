@@ -42,7 +42,6 @@ namespace FinTrack.Server.Data
             builder.Entity<SavingsGoal>()
                 .Property(g => g.CurrentAmount).HasColumnType("decimal(18,2)");
 
-            // Seed default categories
             builder.Entity<Category>().HasData(
                 new Category { Id = 1,  Name = "Food & Dining",  Icon = "🍔", Color = "#EF4444", Type = CategoryType.Expense },
                 new Category { Id = 2,  Name = "Rent & Housing", Icon = "🏠", Color = "#F59E0B", Type = CategoryType.Expense },

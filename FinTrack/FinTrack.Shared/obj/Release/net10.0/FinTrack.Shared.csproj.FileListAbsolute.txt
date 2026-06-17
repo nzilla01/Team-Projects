@@ -1,0 +1,12 @@
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\bin\Release\net10.0\FinTrack.Shared.deps.json
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\bin\Release\net10.0\FinTrack.Shared.dll
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\bin\Release\net10.0\FinTrack.Shared.pdb
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.AssemblyInfoInputs.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.AssemblyInfo.cs
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.sourcelink.json
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.dll
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\refint\FinTrack.Shared.dll
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\FinTrack.Shared.pdb
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Shared\obj\Release\net10.0\ref\FinTrack.Shared.dll

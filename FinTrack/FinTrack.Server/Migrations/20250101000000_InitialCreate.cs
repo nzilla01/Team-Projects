@@ -4,21 +4,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinTrack.Server.Migrations
 {
-    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Identity tables are created by EF Core Identity automatically.
-            // This migration creates the app-specific tables.
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
-                    Id    = table.Column<int>(nullable: false)
-                                 .Annotation("SqlServer:Identity", "1, 1"),
+                    Id    = table.Column<int>(nullable: false).Annotation("SqlServer:Identity", "1, 1"),
                     Name  = table.Column<string>(nullable: false),
                     Icon  = table.Column<string>(nullable: false, defaultValue: "💰"),
                     Color = table.Column<string>(nullable: false, defaultValue: "#1D9E75"),
@@ -30,8 +24,7 @@ namespace FinTrack.Server.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id          = table.Column<int>(nullable: false)
-                                       .Annotation("SqlServer:Identity", "1, 1"),
+                    Id          = table.Column<int>(nullable: false).Annotation("SqlServer:Identity", "1, 1"),
                     UserId      = table.Column<string>(nullable: false),
                     CategoryId  = table.Column<int>(nullable: false),
                     Amount      = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -42,20 +35,15 @@ namespace FinTrack.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey("FK_Transactions_Categories_CategoryId",
-                        x => x.CategoryId, "Categories", "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey("FK_Transactions_AspNetUsers_UserId",
-                        x => x.UserId, "AspNetUsers", "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey("FK_Transactions_Categories_CategoryId", x => x.CategoryId, "Categories", "Id", onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey("FK_Transactions_AspNetUsers_UserId", x => x.UserId, "AspNetUsers", "Id", onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SavingsGoals",
                 columns: table => new
                 {
-                    Id            = table.Column<int>(nullable: false)
-                                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Id            = table.Column<int>(nullable: false).Annotation("SqlServer:Identity", "1, 1"),
                     UserId        = table.Column<string>(nullable: false),
                     Title         = table.Column<string>(nullable: false),
                     Description   = table.Column<string>(nullable: false),
@@ -68,12 +56,9 @@ namespace FinTrack.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SavingsGoals", x => x.Id);
-                    table.ForeignKey("FK_SavingsGoals_AspNetUsers_UserId",
-                        x => x.UserId, "AspNetUsers", "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey("FK_SavingsGoals_AspNetUsers_UserId", x => x.UserId, "AspNetUsers", "Id", onDelete: ReferentialAction.Cascade);
                 });
 
-            // Seed default categories
             migrationBuilder.InsertData("Categories",
                 columns: new[] { "Id", "Name", "Icon", "Color", "Type" },
                 values: new object[,]
@@ -91,7 +76,6 @@ namespace FinTrack.Server.Migrations
                 });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable("SavingsGoals");

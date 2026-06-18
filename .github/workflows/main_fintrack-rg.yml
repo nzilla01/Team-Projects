@@ -60,6 +60,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'fintrack-api'
+          resource-group: 'fintrack-rg'
           slot-name: 'Production'
           package: './.net-app'
           

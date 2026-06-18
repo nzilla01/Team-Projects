@@ -1,9 +1,5 @@
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\FinTrack.Client.runtimeconfig.json
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Blazored.LocalStorage.4u0gbfq4cq.wasm
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.7tfx53urhd.wasm
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.g2j7tmbedp.pdb
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.k9comilgqd.pdb
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.wcdqsojtez.wasm
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Authorization.f7yamg8acn.wasm
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Authorization.8nosel0t6a.wasm
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Forms.au92kshad9.wasm
@@ -216,7 +212,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\netstandard.trfv8kyc3h.wasm
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.Extensions.DependencyInjection.92ulj88j6e.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Web.yq1k6uyfig.wasm.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.wcdqsojtez.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Threading.Thread.vbk8bvz5j0.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Security.Cryptography.OpenSsl.v8o9t988gs.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Configuration.8fonmeslzv.wasm.gz
@@ -231,7 +226,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Net.WebSockets.Client.00fz63qebl.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.VisualBasic.Core.gmltau8vp0.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\icudt_no_CJK.lfu7j35m59.dat.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.g2j7tmbedp.pdb.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Threading.Overlapped.s6j4ly2axs.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Diagnostics.Process.4fo048m2jo.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Xml.XPath.rjypl7uqj2.wasm.gz
@@ -263,7 +257,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Security.Principal.Windows.tw83djiuvu.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Resources.ResourceManager.asf8ypyhhp.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Text.Encodings.Web.z2ybwhkon2.wasm.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.k9comilgqd.pdb.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Drawing.5d7z3jqlu2.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.CSharp.umoc2dux9t.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Drawing.Primitives.n8tlppp6mf.wasm.gz
@@ -343,7 +336,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Authorization.f7yamg8acn.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Diagnostics.TraceSource.n3ulmu5axh.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Diagnostics.StackTrace.1ylo7c5c2h.wasm.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.7tfx53urhd.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Security.Principal.ltqvnuenw6.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.Extensions.Configuration.FileExtensions.phra2kqghi.wasm.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\System.Diagnostics.TextWriterTraceListener.4ff8kwpt5m.wasm.gz
@@ -867,7 +859,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\dotnet.js
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\yfp99akue9-{0}-5nxr4g1tq1-5nxr4g1tq1.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\eewqevtj8s-{0}-sbvu7z7361-sbvu7z7361.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\vonf38ksz5-{0}-mjro7een3i-mjro7een3i.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\9qneeisic9-{0}-66stpp682q-66stpp682q.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\bzpa0ge8nw-{0}-4u0gbfq4cq-4u0gbfq4cq.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\kdknclnr66-{0}-f7yamg8acn-f7yamg8acn.gz
@@ -1078,11 +1069,6 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\1j6btckm80-{0}-tjcz0u77k5-tjcz0u77k5.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\qmf9515yep-{0}-tptq2av103-tptq2av103.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\2838sh3n9i-{0}-lfu7j35m59-lfu7j35m59.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\0lez03d8ki-{0}-wcdqsojtez-wcdqsojtez.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\7evhmddsvd-{0}-k9comilgqd-k9comilgqd.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\kjtw7av6od-{0}-7tfx53urhd-7tfx53urhd.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\2lufz04nmd-{0}-g2j7tmbedp-g2j7tmbedp.gz
-C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\9uvlo1c56m-{0}-jj339ttvv0-jj339ttvv0.gz
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\staticwebassets.build.json
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\staticwebassets.build.json.cache
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\staticwebassets.development.json
@@ -1093,3 +1079,23 @@ C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\refint\FinTrack.Client.dll
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\FinTrack.Client.pdb
 C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\ref\FinTrack.Client.dll
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.5r51ocizm6.pdb
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.kbwxd62wo6.wasm
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.gs6ap3yhfh.pdb
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.wkp44ftw0d.wasm
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.DotNet.HotReload.WebAssembly.Browser.v5huyml5sc.wasm
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.wkp44ftw0d.wasm.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.5r51ocizm6.pdb.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Shared.gs6ap3yhfh.pdb.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\FinTrack.Client.kbwxd62wo6.wasm.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\wwwroot\_framework\Microsoft.DotNet.HotReload.WebAssembly.Browser.v5huyml5sc.wasm.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\bin\Release\net10.0\Microsoft.DotNet.HotReload.WebAssembly.Browser.dll
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\webcil\Microsoft.DotNet.HotReload.WebAssembly.Browser.wasm
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\f9o902iofb-{0}-99zm1jdh75-99zm1jdh75.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\vonf38ksz5-{0}-9ohhyvtvbu-9ohhyvtvbu.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\lspfbm5jjh-{0}-v5huyml5sc-v5huyml5sc.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\0lez03d8ki-{0}-wkp44ftw0d-wkp44ftw0d.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\7evhmddsvd-{0}-gs6ap3yhfh-gs6ap3yhfh.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\kjtw7av6od-{0}-kbwxd62wo6-kbwxd62wo6.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\2lufz04nmd-{0}-5r51ocizm6-5r51ocizm6.gz
+C:\Users\USER\Documents\Team Project\FinTrack\FinTrack.Client\obj\Release\net10.0\compressed\9uvlo1c56m-{0}-tc36sy47s6-tc36sy47s6.gz

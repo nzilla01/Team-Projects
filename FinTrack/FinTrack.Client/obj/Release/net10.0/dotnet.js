@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "FinTrack.Client",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-1CFy0ZyaaBdQHv0G7I/mSES2U6YO266l0uGU0Dxb4Zw=",
+    "hash": "sha256-s5APOXhgFHVVhCYtqMJZVRZKEoCS543inndZ/ZayLTc=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.mx9wzm9o5h.js"
@@ -104,6 +104,12 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
         "virtualPath": "Microsoft.AspNetCore.Metadata.wasm",
         "name": "Microsoft.AspNetCore.Metadata.begmnasal1.wasm",
         "integrity": "sha256-feTahvOhYuLDIgSFkwXDSewTMyzsM7M9tmjKWEjxeBI=",
+        "cache": "force-cache"
+      },
+      {
+        "virtualPath": "Microsoft.DotNet.HotReload.WebAssembly.Browser.wasm",
+        "name": "Microsoft.DotNet.HotReload.WebAssembly.Browser.v5huyml5sc.wasm",
+        "integrity": "sha256-nUOp/kC3zVe2D4ay6RHxrSXcFPp/ckiVhdpJ76khAVE=",
         "cache": "force-cache"
       },
       {
@@ -1254,29 +1260,39 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "FinTrack.Shared.wasm",
-        "name": "FinTrack.Shared.wcdqsojtez.wasm",
-        "integrity": "sha256-IDJF19bhgI5Jbrp/g+kvYAXJeElvsHYYCvLtJf199DM=",
+        "name": "FinTrack.Shared.wkp44ftw0d.wasm",
+        "integrity": "sha256-gLXVo6+tZq/MS+1qUcs96dl5BFm0eQFTFcryY1XvYCQ=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "FinTrack.Client.wasm",
-        "name": "FinTrack.Client.7tfx53urhd.wasm",
-        "integrity": "sha256-S38BK8d19vwPsiYlLJ7UEygJUFDP0nK+Dyq1d3NoMW8=",
+        "name": "FinTrack.Client.kbwxd62wo6.wasm",
+        "integrity": "sha256-ILnELAizhEWoT323QywaHsSt8E324lO8Ff6jgrkpiwI=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
         "virtualPath": "FinTrack.Shared.pdb",
-        "name": "FinTrack.Shared.k9comilgqd.pdb",
-        "integrity": "sha256-GAKjz4zj7WQ50osyoeeLutOzWvvKma8YAFcDYHhb0IQ=",
+        "name": "FinTrack.Shared.gs6ap3yhfh.pdb",
+        "integrity": "sha256-4EW91NYEMF4V21+IDwn0WFiL2rMyUy0jnjYEBSjLuI0=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "FinTrack.Client.pdb",
-        "name": "FinTrack.Client.g2j7tmbedp.pdb",
-        "integrity": "sha256-SOHkeBMVF2wT/ZMbwwlT89kRZhlJ34ulJL1TzV0nkZ0=",
+        "name": "FinTrack.Client.5r51ocizm6.pdb",
+        "integrity": "sha256-YXsn1bQ/aVYs4NtYo/HDOJCiwXvnJWDC0cgDVP4iSLw=",
         "cache": "force-cache"
+      }
+    ],
+    "libraryInitializers": [
+      {
+        "name": "_content/Microsoft.DotNet.HotReload.WebAssembly.Browser/Microsoft.DotNet.HotReload.WebAssembly.Browser.99zm1jdh75.lib.module.js"
+      }
+    ],
+    "modulesAfterConfigLoaded": [
+      {
+        "name": "../_content/Microsoft.DotNet.HotReload.WebAssembly.Browser/Microsoft.DotNet.HotReload.WebAssembly.Browser.99zm1jdh75.lib.module.js"
       }
     ]
   },

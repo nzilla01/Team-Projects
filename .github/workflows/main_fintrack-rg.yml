@@ -20,14 +20,17 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Clear NuGet cache
+        run: dotnet nuget locals all --clear
+
       - name: Restore dependencies
-        run: dotnet restore "FinTrack/FinTrack.sln" --verbosity minimal
+        run: dotnet restore "FinTrack/FinTrack.Server/FinTrack.Server.csproj" --verbosity minimal
 
-      - name: Build solution
-        run: dotnet build "FinTrack/FinTrack.sln" --configuration Release --no-restore --verbosity minimal
+      - name: Build with dotnet
+        run: dotnet build "FinTrack/FinTrack.Server/FinTrack.Server.csproj" --configuration Release --no-restore --verbosity minimal
 
-      - name: Publish API project
-        run: dotnet publish "FinTrack/FinTrack.Server/FinTrack.Server.csproj" -c Release -o ./publish --no-build --verbosity minimal
+      - name: dotnet publish
+        run: dotnet publish "FinTrack/FinTrack.Server/FinTrack.Server.csproj" -c Release -o ./publish --no-restore --verbosity minimal
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v5

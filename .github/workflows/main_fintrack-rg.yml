@@ -21,10 +21,10 @@ jobs:
           dotnet-version: '8.x'   # Use the correct .NET version
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ./FintrackApi/FintrackApi.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish ./FintrackApi/FintrackApi.csproj -c Release -o ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

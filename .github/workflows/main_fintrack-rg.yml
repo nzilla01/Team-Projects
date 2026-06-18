@@ -13,24 +13,24 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
+          dotnet-version: '8.x'   # Change if your project targets 6.x or 7.x
 
       - name: Clear NuGet cache
         run: dotnet nuget locals all --clear
 
       - name: Restore dependencies
-        run: dotnet restore "FinTrack/FinTrack.Server/FinTrack.Server.csproj" --verbosity minimal
+        run: dotnet restore ./FintrackApi/FintrackApi.csproj
 
       - name: Build with dotnet
-        run: dotnet build "FinTrack/FinTrack.Server/FinTrack.Server.csproj" --configuration Release --no-restore --verbosity minimal
+        run: dotnet build ./FintrackApi/FintrackApi.csproj --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish "FinTrack/FinTrack.Server/FinTrack.Server.csproj" -c Release -o ./publish --no-restore --verbosity minimal
+        run: dotnet publish ./FintrackApi/FintrackApi.csproj -c Release -o ./publish --no-restore
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -50,9 +50,10 @@ jobs:
         with:
           name: .net-app
 
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v4
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'fintrack-api'
+          app-name: 'fintrack-rg'
+          slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish

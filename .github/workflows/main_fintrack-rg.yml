@@ -55,6 +55,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_99B5C6DEFDBF4B59B8C8E0DEB4BF7DA9 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_62A6909B948545258C3273C897F51964 }}
 
+      - name: Confirm Azure subscription and app
+        run: |
+          az account show
+          az webapp show --name fintrack-api --resource-group fintrack-rg
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3

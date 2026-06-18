@@ -13,21 +13,24 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.x'   # Use the correct .NET version
+          dotnet-version: '10.x'
 
-      - name: Build with dotnet
-        run: dotnet build ./FintrackApi/FintrackApi.csproj --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore "FinTrack/FinTrack.sln" --verbosity minimal
 
-      - name: dotnet publish
-        run: dotnet publish ./FintrackApi/FintrackApi.csproj -c Release -o ./publish
+      - name: Build solution
+        run: dotnet build "FinTrack/FinTrack.sln" --configuration Release --no-restore --verbosity minimal
+
+      - name: Publish API project
+        run: dotnet publish "FinTrack/FinTrack.Server/FinTrack.Server.csproj" -c Release -o ./publish --no-build --verbosity minimal
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: .net-app
           path: ./publish
@@ -36,26 +39,17 @@ jobs:
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write
       contents: read
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+      - name: Deploy to Azure WebApp
+        uses: azure/webapps-deploy@v4
         with:
-          app-name: 'fintrack-rg'
-          slot-name: 'Production'
+          app-name: 'fintrack-api'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish

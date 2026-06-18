@@ -30,7 +30,7 @@ jobs:
         run: dotnet publish "FinTrack/FinTrack.Server/FinTrack.Server.csproj" -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
@@ -44,12 +44,12 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: .net-app
       
       - name: Login to Azure
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E35A97064FE0496388AA627E7EE2F078 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_99B5C6DEFDBF4B59B8C8E0DEB4BF7DA9 }}
@@ -62,7 +62,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v4
         with:
           app-name: 'fintrack-api'
           resource-group: 'fintrack-rg'
